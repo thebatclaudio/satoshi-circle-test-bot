@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
-import WebApp from '@twa-dev/sdk'
 </script>
 
 <template>
