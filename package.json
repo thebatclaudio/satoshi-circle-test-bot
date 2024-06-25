@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tma.js/sdk": "^2.5.1",
     "@twa-dev/sdk": "^7.0.0",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "vue": "^3.4.29"

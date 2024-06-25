@@ -1,37 +1,76 @@
-<script setup lang="ts">
-import { ref } from 'vue'
+<script lang="ts">
+import { initInitData, mockTelegramEnv, parseInitData } from '@tma.js/sdk';
 
-defineProps<{ msg: string }>()
+export default {
+  data() {
+    return {
+      userInfo: {
+        firstName: ''
+      },
+      count: 0,
+    }
+  },
+  created() {
+    this.initData();
+  },
+  methods: {
+    initData() {
+      const initDataRaw = new URLSearchParams([
+        ['user', JSON.stringify({
+          id: 99281932,
+          first_name: 'Andrew',
+          last_name: 'Rogue',
+          username: 'rogue',
+          language_code: 'en',
+          is_premium: true,
+          allows_write_to_pm: true,
+        })],
+        ['hash', '89d6079ad6762351f38c6dbbc41bb53048019256a9443988af7a48bcad16ba31'],
+        ['auth_date', '1716922846'],
+        ['start_param', 'debug'],
+        ['chat_type', 'sender'],
+        ['chat_instance', '8428209589180549439'],
+      ]).toString();
 
-const count = ref(0)
+      mockTelegramEnv({
+        themeParams: {
+          accentTextColor: '#6ab2f2',
+          bgColor: '#17212b',
+          buttonColor: '#5288c1',
+          buttonTextColor: '#ffffff',
+          destructiveTextColor: '#ec3942',
+          headerBgColor: '#17212b',
+          hintColor: '#708499',
+          linkColor: '#6ab3f3',
+          secondaryBgColor: '#232e3c',
+          sectionBgColor: '#17212b',
+          sectionHeaderTextColor: '#6ab3f3',
+          subtitleTextColor: '#708499',
+          textColor: '#f5f5f5',
+        },
+        initData: parseInitData(initDataRaw),
+        initDataRaw,
+        version: '7.2',
+        platform: 'tdesktop',
+      });
+
+      const userInfo = initInitData()
+
+      if (userInfo !== undefined) {
+        if(userInfo.user !== undefined) {
+          this.userInfo.firstName = userInfo?.user?.firstName
+        }
+      }
+    }
+  },
+}
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
   <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
+    <button type="button" @click="count++">Hai cliccato {{ count }} volte</button>
   </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Learn more about IDE Support for Vue in the
-    <a
-      href="https://vuejs.org/guide/scaling-up/tooling.html#ide-support"
-      target="_blank"
-      >Vue Docs Scaling up Guide</a
-    >.
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+  <p class="read-the-docs">Ma quanto sai cliccare, <strong>{{ userInfo.firstName }}</strong>?</p>
 </template>
 
 <style scoped>
