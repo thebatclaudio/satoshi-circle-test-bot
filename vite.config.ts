@@ -8,7 +8,7 @@ export default defineConfig({
     include: ['@tma.js/sdk'],
   },
   build: {
-    outDir: './docs'
+    outDir: './dist'
   },
   base: './'
 })
